@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "Node.js netology course",
   "bin": {
-    "current": "./002-console/date.util.js"
+    "current": "./002-console/date_current.util.js",
+    "add": "./002-console/date_add.util.js",
+    "sub": "./002-console/date_sub.util.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sergey Pololin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
 }
