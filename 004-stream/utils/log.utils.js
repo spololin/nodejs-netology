@@ -3,8 +3,6 @@ import * as url from 'url';
 import * as path from 'path';
 
 const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const createLogLine = (data) => {
     const logObj = {
         date: new Date(),
@@ -14,8 +12,10 @@ const createLogLine = (data) => {
     return `${JSON.stringify(logObj)}\n`;
 }
 
+export const dirname = path.join(path.dirname(__filename), "../");
+
 export const checkLogDir = () => {
-    const dirLogs = path.join(__dirname, "logs");
+    const dirLogs = path.join(dirname, "logs");
     if (!fs.existsSync(dirLogs)) {
         fs.mkdirSync(dirLogs, (err) => {
             if (err) throw new Error(err);
@@ -24,7 +24,7 @@ export const checkLogDir = () => {
 }
 
 export const writeLog = (logFile, data) => {
-    const fileLog = path.join(__dirname, "logs", logFile);
+    const fileLog = path.join(dirname, "logs", logFile);
     fs.appendFile(fileLog, createLogLine(data), (err) => {
         if (err) throw new Error(err);
     })
