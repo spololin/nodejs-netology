@@ -3,8 +3,8 @@ import {
     stdin as input,
     stdout as output,
 } from 'node:process';
-import {args} from './args.util.js';
-import { checkLogDir, writeLog } from './log.utils.js';
+import {args} from './utils/args.util.js';
+import { checkLogDir, writeLog } from './utils/log.utils.js';
 
 const logFile = args?.log;
 const stream = readline.createInterface({ input, output });
