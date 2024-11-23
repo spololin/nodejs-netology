@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.post("/api/user/login", (req, res) => {
     res.status(201);
-    res.json({ id: 1, mail: "test@mail.ru" }    );
+    res.json({ id: 1, mail: "test@mail.ru" });
 });
 
 app.get("/api/books", (req, res) => {
@@ -39,15 +39,13 @@ app.get("/api/books/:id", (req, res) => {
         res.json(books[idx]);
     } else {
         res.status(404);
-        res.json("404 | книга не найдена"); 
+        res.json("Книга не найдена");
     }
 });
 
 app.post("/api/books/", (req, res) => {
-    const { books } = stor;
-    const { data } = req.body;
-
-    const newBook = new Book(data);
+    const { books } = store;
+    const newBook = new Book(req.body);
     books.push(newBook);
 
     res.status(201);
@@ -56,14 +54,13 @@ app.post("/api/books/", (req, res) => {
 
 app.put("/api/books/:id", (req, res) => {
     const { books } = store;
-    const { data } = req.body;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
 
     if (idx !== -1) {
         books[idx] = {
             ...books[idx],
-            ...data
+            ...req.body
         };
 
         res.json(books[idx]);
