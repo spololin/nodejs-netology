@@ -1,14 +1,13 @@
-const store = require("../store/index.js");
 const express = require("express");
 const router = express.Router();
+const Book = require("../models/Book");
+const books = new Array(Math.floor(Math.random() * 9)).fill(null).map(() => new Book());
 
 router.get("/", (req, res) => {
-    const { books } = store;
     res.json(books);
 });
 
 router.get("/:id", (req, res) => {
-    const { books } = store;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
 
@@ -21,7 +20,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    const { books } = store;
     const newBook = new Book(req.body);
     books.push(newBook);
 
@@ -30,7 +28,6 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-    const { books } = store;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
 
@@ -48,7 +45,6 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-    const { books } = store;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
 

@@ -9,11 +9,8 @@ class Book {
         this.favorite = data?.favorite;
         this.fileCover = data?.fileCover;
         this.fileName = data?.fileName;
+        this.fileBook = data?.fileBook;
     }
 }
 
-const books = [new Book(), new Book()];
-
-module.exports = {
-    books
-}
+module.exports = Book;
