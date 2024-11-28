@@ -60,7 +60,8 @@ router.post('/update/:id', (req, res) => {
     if (idx !== -1) {
         books[idx] = {
             ...books[idx],
-            ...req.body
+            ...req.body,
+            favorite: req.body.favorite === 'on'
         };
 
         res.redirect("/books");
@@ -79,35 +80,6 @@ router.get('/delete/:id', (req, res) => {
 
     books.splice(idx, 1);
     res.redirect(`/books`);
-});
-
-router.post("/:id/upload", upload.single("filedata"), (req, res) => {
-    const { id } = req.params;
-    const idx = books.findIndex((el) => el.id === id);
-
-    if (idx !== -1) {
-        books[idx].fileBook = req.file.path;
-        res.json(books[idx]);
-    } else {
-        res.status(404);
-        res.json("Книга не найдена");
-    }
-});
-
-router.get("/:id/download", (req, res) => {
-    const { id } = req.params;
-    const idx = books.findIndex((el) => el.id === id);
-
-    if (idx !== -1) {
-        res.download(path.join(__dirname, "..", books[idx].fileBook), (err) => {
-			if (err) {
-				res.status(404).send("Файл книги не найден");
-			}
-		});
-    } else {
-        res.status(404);
-        res.json("Книга не найдена");
-    }
 });
 
 module.exports = router;
