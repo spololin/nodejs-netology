@@ -1,0 +1,27 @@
+PS C:\Users\Сергей\git\nodejs-netology> docker pull node:15.14
+15.14: Pulling from library/node
+bfde2ec33fbc: Download complete
+dc05be471d51: Download complete
+989c5d2d2313: Download complete
+bd821d20ef8c: Download complete
+55fab5cadd3c: Download complete
+7b6173a10eb8: Download complete
+6041b69671c6: Download complete
+787f5e2f1047: Download complete
+Digest: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Status: Downloaded newer image for node:15.14
+docker.io/library/node:15.14
+PS C:\Users\Сергей\git\nodejs-netology> docker run --name mynode -it -e NAME=Sergey -e SURNAME=Pololin node:15.14
+Welcome to Node.js v15.14.0.
+Type ".help" for more information.
+> `Привет, ${process.env.NAME} ${process.env.SURNAME}!`
+'Привет, Sergey Pololin!'
+>
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+>
+PS C:\Users\Сергей\git\nodejs-netology> docker rm mynode
+mynodePS C:\Users\Сергей\git\nodejs-netology> docker rmi node:15.14
+Untagged: node:15.14
+Deleted: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+PS C:\Users\Сергей\git\nodejs-netology>
+
