@@ -1,7 +1,5 @@
-const path = require("path");
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/file")
 const Book = require("../models/Book");
 const books = new Array(Math.floor(Math.random() * 9) + 1).fill(null).map((val, idx) => new Book({
     title: `Книга ${idx + 1}`,
@@ -17,6 +15,20 @@ router.get("/", (req, res) => {
     res.render("books/list", {books, title: "Книги"});
 });
 
+router.get('/create', (req, res) => {
+    res.render("books/create", {
+        title: "Создание книги",
+        book: {}
+    });
+});
+
+router.post('/create', (req, res) => {
+    const newBook = new Book(req.body);
+    books.push(newBook);
+
+    res.redirect("/books");
+});
+
 router.get("/:id", (req, res) => {
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
@@ -26,20 +38,6 @@ router.get("/:id", (req, res) => {
     } else {
         res.redirect('/404');
     }
-});
-
-router.get('/create/1', (req, res) => {
-    res.render("books/create", {
-        title: "Создание книги",
-        book: {}
-    });
-});
-
-router.post('/create/1', (req, res) => {
-    const newBook = new Book(req.body);
-    books.push(newBook);
-
-    res.redirect("/books");
 });
 
 router.get('/update/:id', (req, res) => {
