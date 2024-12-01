@@ -1,0 +1,48 @@
+PS C:\Users\Сергей\git\nodejs-netology> docker pull node:15.14
+15.14: Pulling from library/node
+4b57d41e8391: Download complete
+bd821d20ef8c: Download complete
+787f5e2f1047: Download complete
+7b6173a10eb8: Download complete
+bfde2ec33fbc: Download complete
+dc05be471d51: Download complete
+989c5d2d2313: Download complete
+6041b69671c6: Download complete
+55fab5cadd3c: Download complete
+Digest: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Status: Downloaded newer image for node:15.14
+docker.io/library/node:15.14
+PS C:\Users\Сергей\git\nodejs-netology> docker run --name first_node -it -v ./data:/var/first/data node:15.14 sleep infinity
+PS C:\Users\Сергей\git\nodejs-netology> docker run --name second_node -it -v ./data:/var/second/data node:15.14 sleep infinity
+PS C:\Users\Сергей\git\nodejs-netology> docker exec -it first_node /bin/bash
+root@5b79b5e2e1e4:/# cd var/first
+root@5b79b5e2e1e4:/var/first# ls
+data
+root@5b79b5e2e1e4:/var/first# cd data
+root@5b79b5e2e1e4:/var/first/data# touch first_node_file.txt
+root@5b79b5e2e1e4:/var/first/data# ls
+first_node_file.txt
+root@5b79b5e2e1e4:/var/first/data# ls
+first_node_file.txt
+test.txt
+root@5b79b5e2e1e4:/var/first/data#
+
+PS C:\Users\Сергей\git\nodejs-netology> docker exec -it second_node /bin/bash
+root@ce4055cf6265:/# cd var/second/data
+root@ce4055cf6265:/var/second/data/# ls
+first_node_file.txt
+test.txt
+root@ce4055cf6265:/var/second/data/#
+
+PS C:\Users\Сергей\git\nodejs-netology> docker stop first_node
+first_node
+PS C:\Users\Сергей\git\nodejs-netology> docker stop second_node
+second_node
+PS C:\Users\Сергей\git\nodejs-netology> docker rm first_node
+first_node
+PS C:\Users\Сергей\git\nodejs-netology> docker rm second_node
+second_node
+PS C:\Users\Сергей\git\nodejs-netology> docker rmi node:15.14
+Untagged: node:15.14
+Deleted: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+PS C:\Users\Сергей\git\nodejs-netology>
