@@ -1,62 +1,66 @@
 const express = require("express");
 const router = express.Router();
-const Book = require("../models/Book");
+const Book = require("../models/book");
 
 router.get("/", async (req, res) => {
-    try {
-        const books = await Book.find().select("-__v");
+    const books = await Book.find();
 
-        res.json(books)
-    } catch (e) {
-        res.status(500).json(e)
-    }
+    res.render("books/list", {books, title: "Книги"});
 });
 
-router.get("/:id", async (req, res) => {
-    const {id} = req.params;
-
-    try {
-        const book = await Book.findById(id).select("-__v")
-
-        res.json(book);
-    } catch (e) {
-        res.status(500).json(e)
-    }
+router.get('/create', (req, res) => {
+    res.render("books/create", {
+        title: "Создание книги",
+        book: {}
+    });
 });
 
-router.post("/", async (req, res) => {
-    const newBook = new Book({...req.body});
+router.post('/create', async (req, res) => {
+    console.log(req.body);
+    const newBook = new Book({...req.body, favorite: req.body.favorite === 'on'});
 
     try {
         await newBook.save();
 
-        res.json(newBook);
+        res.redirect("/books");
     } catch (e) {
         res.status(500).json(e);
     }
+
 });
 
-router.put("/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+
+    console.log(book);
+
+    res.render("books/view", {book, title: "Данные о книге"});
+});
+
+router.get('/update/:id', async (req, res) => {
     const {id} = req.params;
+    const book = await Book.findById(id);
 
-    try {
-        await Book.findByIdAndUpdate(id, {...req.body});
-
-        res.redirect("/api/books/${id}")
-    } catch (e) {
-        res.status(500).json(e);
-    }
+    res.render("books/update", {book, title: "Редактирование книги"});
 });
 
-router.delete("/:id", async (req, res) => {
+router.post('/update/:id', async (req, res) => {
+    const { id } = req.params;
+    await Book.findByIdAndUpdate(id, {...req.body, favorite: req.body.favorite === 'on'});
+
+    res.redirect(`/books/`);
+});
+
+router.get('/delete/:id', async (req, res) => {
     const {id} = req.params;
 
     try {
         await Book.deleteOne({_id: id})
 
-        res.json(true);
+        res.redirect(`/books/`);
     } catch (e) {
-        res.status(500).json(e);
+        res.status(500).json(e)
     }
 });
 

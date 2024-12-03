@@ -1,4 +1,4 @@
-<form method="POST" class="mt-5">
+<form method="POST" class="mt-5" >
     <div class="form-group">
         <label for="inputTitle">Заголовок</label>
         <input type="text"
@@ -29,7 +29,7 @@
                name="favorite"
                class="form-check-input"
                id="inputFavorite"
-               <%=book.favorite ? 'checked' : ''%>>
+               <%=book.favorite === 'true' ? 'checked' : ''%>>
         <label for="inputFavorite" class="form-check-label">В избранном</label>
     </div>
     <div class="form-group">
@@ -47,15 +47,6 @@
                name="fileName"
                class="form-control"
                id="inputFileName">
-    </div>
-    <div class="form-group">
-        <label for="inputFileBook">Файл книги</label>
-        <input type="text"
-               value="<%=book.fileBook%>"
-               name="fileBook"
-               class="form-control"
-               id="inputFileBook">
-        <a></a>
     </div>
     <div class="form-group text-right ">
         <button type="submit" class="btn btn-primary">Сохранить</button>
