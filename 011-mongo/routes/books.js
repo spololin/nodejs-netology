@@ -1,83 +1,63 @@
 const express = require("express");
 const router = express.Router();
 const Book = require("../models/Book");
-const books = new Array(Math.floor(Math.random() * 9) + 1).fill(null).map((val, idx) => new Book({
-    title: `Книга ${idx + 1}`,
-    description: `Описание ${idx + 1}`,
-    authors: `Автор ${idx + 1}`,
-    favorite: Boolean(Math.random() < 0.5 ? 0 : 1),
-    fileCover: `Обложка ${idx + 1}`,
-    fileName: `file${idx + 1}.pdf`,
-    fileBook: `public/books/file${idx + 1}.pdf`
-}));
 
-router.get("/", (req, res) => {
-    res.render("books/list", {books, title: "Книги"});
-});
+router.get("/", async (req, res) => {
+    try {
+        const books = await Book.find().select("-__v");
 
-router.get('/create', (req, res) => {
-    res.render("books/create", {
-        title: "Создание книги",
-        book: {}
-    });
-});
-
-router.post('/create', (req, res) => {
-    const newBook = new Book(req.body);
-    books.push(newBook);
-
-    res.redirect("/books");
-});
-
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-    const idx = books.findIndex((el) => el.id === id);
-
-    if (idx !== -1) {
-        res.render("books/view", {book: books[idx], title: "Данные о книге"});
-    } else {
-        res.redirect('/404');
+        res.json(books)
+    } catch (e) {
+        res.status(500).json(e)
     }
 });
 
-router.get('/update/:id', (req, res) => {
+router.get("/:id", async (req, res) => {
     const {id} = req.params;
-    const idx = books.findIndex((el) => el.id === id);
 
-    if (idx !== -1) {
-        res.render("books/update", {book: books[idx], title: "Редактирование книги"});
-    } else {
-        res.redirect('/404');
+    try {
+        const book = await Book.findById(id).select("-__v")
+
+        res.json(book);
+    } catch (e) {
+        res.status(500).json(e)
     }
 });
 
-router.post('/update/:id', (req, res) => {
-    const { id } = req.params;
-    const idx = books.findIndex((el) => el.id === id);
+router.post("/", async (req, res) => {
+    const newBook = new Book({...req.body});
 
-    if (idx !== -1) {
-        books[idx] = {
-            ...books[idx],
-            ...req.body,
-            favorite: req.body.favorite === 'on'
-        };
+    try {
+        await newBook.save();
 
-        res.redirect("/books");
-    } else {
-        res.redirect('/404');
+        res.json(newBook);
+    } catch (e) {
+        res.status(500).json(e);
     }
 });
 
-router.get('/delete/:id', (req, res) => {
+router.put("/:id", async (req, res) => {
     const {id} = req.params;
-    const idx = books.findIndex((el) => el.id === id);
 
-    if (idx === -1) {
-        res.redirect('/404');
+    try {
+        await Book.findByIdAndUpdate(id, {...req.body});
+
+        res.redirect("/api/books/${id}")
+    } catch (e) {
+        res.status(500).json(e);
     }
+});
 
-    books.splice(idx, 1);
-    res.redirect(`/books`);
+router.delete("/:id", async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        await Book.deleteOne({_id: id})
+
+        res.json(true);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
 module.exports = router;
