@@ -26,3 +26,15 @@
   authors: "string"
 }
 ``` 
+db.books.insertMany([
+    { title: "Кинга 1", description: "Описание 1", authors: "Автор 1, Автор 2" },
+    { title: "Книга 2", description: "Описание 2", authors: "Автор 2, Автор 3" },
+    { title: "Книга 3", description: "Описание 3", authors: "Автор 3, Автор 4" }
+])
+
+db.books.find({ title: "Книга 3" })
+
+db.books.updateOne(
+    { _id: "abc" },
+    { $set: { description: "Описание 4", authors: "Автор 5, Автор 6" }}
+)
