@@ -1,0 +1,17 @@
+{
+  "name": "counter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "auhtor": "Galina Malareva",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
